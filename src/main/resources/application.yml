@@ -6,3 +6,5 @@ spring:
 render:
   base:
     url: https://static-service-fp9u.onrender.com/
+    
+logging:  file:    name: /appliction/logs/spring.log
