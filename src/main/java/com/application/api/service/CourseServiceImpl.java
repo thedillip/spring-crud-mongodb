@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.application.api.document.CourseDocument;
+import com.application.api.exception.ResourceNotFound;
 import com.application.api.repository.CourseRepository;
 import com.application.api.request.CourseRequest;
 import com.application.api.response.CourseResponse;
@@ -23,7 +24,7 @@ public class CourseServiceImpl implements CourseService {
 	private final CourseRepository courseRepository;
 
 	@Override
-	public String saveCourse(CourseRequest courseRequest) {
+	public String saveCourse(final CourseRequest courseRequest) {
 		log.info("Inside Service Layer :: CourseServiceImpl::saveCourse()");
 		String message = ApplicationConstant.ERROR;
 		CourseDocument courseDocument = modelMapper.map(courseRequest, CourseDocument.class);
@@ -41,8 +42,11 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public CourseResponse findCourseById(String courseId) {
-		return null;
+	public CourseResponse findCourseById(final String courseId) {
+		log.info("Inside Service Layer :: CourseServiceImpl::findCourseById({})", courseId);
+		CourseDocument courseDocument = courseRepository.findById(courseId)
+				.orElseThrow(() -> new ResourceNotFound("Course not Found with courseId : " + courseId));
+		return modelMapper.map(courseDocument, CourseResponse.class);
 	}
 
 	@Override

@@ -63,6 +63,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>dillip-service</finalName>
 	</build>
 
 </project>

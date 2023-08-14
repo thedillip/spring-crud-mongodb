@@ -2,3 +2,7 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://thedillip:dillip5478@public.gllttmh.mongodb.net/public?retryWrites=true&w=majority
+      
+render:
+  base:
+    url: https://static-service-fp9u.onrender.com/

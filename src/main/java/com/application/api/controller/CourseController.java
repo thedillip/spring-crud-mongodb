@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +60,23 @@ public class CourseController {
 			message = ApplicationConstant.DATA_NOT_FOUND;
 		}
 		log.info("Returned Response from /course GET API :: Response List Size = {}", response.size());
+		return new ResponseEntity<>(new ApiEntity<>(message, response), status);
+	}
+
+	@GetMapping(value = "/course/{courseId}")
+	public ResponseEntity<ApiResponseObject> findCourseById(@PathVariable(name = "courseId") final String courseId) {
+		log.info(
+				"Hitting /course/{} GET API in Controller Layer -- CourseController::findCourseById() :: Path Variable :: courseId = {}",
+				courseId, courseId);
+		HttpStatus status = null;
+		String message = null;
+		CourseResponse response = courseService.findCourseById(courseId);
+		if (response != null) {
+			status = HttpStatus.OK;
+			message = ApplicationConstant.DATA_FOUND;
+		}
+		log.info("Returned Response from /course/{} GET API :: Response = {}", courseId,
+				JavaToJsonConverter.convert(response));
 		return new ResponseEntity<>(new ApiEntity<>(message, response), status);
 	}
 }
