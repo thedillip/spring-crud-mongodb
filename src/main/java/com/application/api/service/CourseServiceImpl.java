@@ -50,18 +50,40 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public String updateCourseById(String courseId, CourseRequest courseRequest) {
-		return null;
+	public String updateCourseById(final String courseId, final CourseRequest courseRequest) {
+		log.info("Inside Service Layer :: CourseServiceImpl::updateCourseById({}, {})", courseId, courseRequest);
+		String message = ApplicationConstant.ERROR;
+		CourseDocument courseDocument = courseRepository.findById(courseId)
+				.orElseThrow(() -> new ResourceNotFound("Course not Found with courseId : " + courseId));
+		courseDocument.setCourseName(courseRequest.getCourseName());
+		courseDocument.setCourseCode(courseRequest.getCourseCode());
+		courseDocument.setCourseDuration(courseRequest.getCourseDuration());
+		courseDocument.setTotalSemester(courseRequest.getTotalSemester());
+		courseRepository.save(courseDocument);
+		message = ApplicationConstant.UPDATED;
+		return message;
 	}
 
 	@Override
 	public String deleteAllCourse() {
-		return null;
+		log.info("Inside Service Layer :: CourseServiceImpl::deleteAllCourse()");
+		if (courseRepository.count() == 0L)
+			throw new ResourceNotFound("Courses not available for deletion");
+		String message = ApplicationConstant.ERROR;
+		courseRepository.deleteAll();
+		message = ApplicationConstant.DELETED;
+		return message;
 	}
 
 	@Override
-	public String deleteCourseById(String courseId) {
-		return null;
+	public String deleteCourseById(final String courseId) {
+		log.info("Inside Service Layer :: CourseServiceImpl::deleteCourseById({})", courseId);
+		CourseDocument courseDocument = courseRepository.findById(courseId)
+				.orElseThrow(() -> new ResourceNotFound("Course not Found with courseId : " + courseId));
+		String message = ApplicationConstant.ERROR;
+		courseRepository.deleteById(courseDocument.getId());
+		message = ApplicationConstant.DELETED;
+		return message;
 	}
 
 }
