@@ -29,7 +29,7 @@ public class JobSchedulerComponent {
 	@Value("${render.base.url}")
 	private String renderBaseUrl;
 
-	@Scheduled(cron = "0 0/5 * * * *")
+//	@Scheduled(cron = "0 0/5 * * * *")
 	public void callRenderStartApi() throws IOException, InterruptedException {
 		log.info("Running Scheduler -- JobSchedulerComponent::callRenderStartApi()");
 		HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -40,7 +40,7 @@ public class JobSchedulerComponent {
 		log.info("########## Response = {} ##########", httpResponse.body());
 	}
 
-	@Scheduled(cron = "0 0/15 * * * *")
+//	@Scheduled(cron = "0 0/15 * * * *")
 	public void callWeightSlipApi() throws IOException, InterruptedException {
 		log.info("Running Scheduler -- JobSchedulerComponent::callWeightSlipApi()");
 		WeightSlipClientRequest weightSlipClientRequest = WeightSlipClientRequest.builder().address("BOUDH")
